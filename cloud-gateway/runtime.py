@@ -137,6 +137,22 @@ class BackendRuntime:
             return url
 
     async def start(self, box, sha: str, key: str) -> None:
+        result = await box.run_process("git", ["-C", SOURCE, "rev-parse", "HEAD"], capture_output=True, check=True)
+        current = (result.stdout or "").strip()
+        if current != sha:
+            shallow = await box.run_process("git", ["-C", SOURCE, "rev-parse", "--is-shallow-repository"], capture_output=True, check=True)
+            fetch = ["-C", SOURCE, "fetch"]
+            if (shallow.stdout or "").strip() == "true":
+                fetch.append("--unshallow")
+            await box.run_process("git", [*fetch, "origin", sha], capture_output=True, check=True)
+            # Old immutable deployment URLs must not downgrade the shared
+            # environment after a newer deployment has already started it.
+            ancestry = await box.run_process(
+                "git", ["-C", SOURCE, "merge-base", "--is-ancestor", sha, current], capture_output=True,
+            )
+            if ancestry.returncode == 0:
+                raise BackendUnavailable("This deployment has been superseded by a newer backend revision")
+
         # Stop only the app process created by this gateway. Dependency tools
         # and unrelated processes in the environment are never selected.
         for process in await box.query_processes():
@@ -148,9 +164,7 @@ class BackendRuntime:
                     await process.kill()
                     await process.wait()
 
-        result = await box.run_process("git", ["-C", SOURCE, "rev-parse", "HEAD"], capture_output=True, check=True)
-        if (result.stdout or "").strip() != sha:
-            await box.run_process("git", ["-C", SOURCE, "fetch", "--depth=1", "origin", sha], capture_output=True, check=True)
+        if current != sha:
             await box.run_process("git", ["-C", SOURCE, "checkout", "--detach", sha], capture_output=True, check=True)
 
         public_host = os.environ.get("VERCEL_PROJECT_PRODUCTION_URL") if key == "production" else os.environ.get("VERCEL_URL")

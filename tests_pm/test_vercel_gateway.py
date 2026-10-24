@@ -136,3 +136,33 @@ def test_native_transport_rejects_unauthorized_http_and_websockets(monkeypatch):
     result = asyncio.run(call("http", [(b"x-pathmind-gateway", secret.encode())]))
     assert result[0]["status"] == 200
     assert (b"x-pathmind-revision", b"a" * 40) in result[0]["headers"]
+
+
+def test_old_deployment_cannot_stop_or_downgrade_current_backend(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / "cloud-gateway"))
+    import runtime
+
+    calls = []
+
+    class Box:
+        async def run_process(self, command, args, **kwargs):
+            calls.append(args)
+            if args[-1] == "HEAD":
+                return SimpleNamespace(stdout="b" * 40, returncode=0)
+            if args[-1] == "--is-shallow-repository":
+                return SimpleNamespace(stdout="true", returncode=0)
+            return SimpleNamespace(stdout="", returncode=0)
+
+        async def query_processes(self):
+            pytest.fail("A superseded deployment must not stop a running process")
+
+    async def check():
+        service = runtime.BackendRuntime()
+        try:
+            with pytest.raises(runtime.BackendUnavailable, match="superseded"):
+                await service.start(Box(), "a" * 40, "production")
+        finally:
+            await service.client.aclose()
+
+    asyncio.run(check())
+    assert any("--unshallow" in args for args in calls)
