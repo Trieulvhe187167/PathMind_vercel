@@ -134,7 +134,7 @@ export default function StaffSidebar({ console: owner }: { console: StaffConsole
   return (
     <aside className="flex h-dvh w-[240px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--secondary)] max-md:max-w-[85vw]">
       <div className="flex h-[56px] shrink-0 items-center gap-2 px-4">
-        <Image src="/logo.png" alt="" width={22} height={22} className="h-[22px] w-[22px] object-contain" />
+        <Image src="/logo.png" unoptimized alt="" width={22} height={22} className="h-[22px] w-[22px] object-contain" />
         <div className="min-w-0 leading-tight">
           <div className="text-[13px] font-semibold text-[var(--foreground)]">PathMind</div>
           <div className="text-[10px] uppercase tracking-[0.14em] text-[var(--muted-foreground)]">

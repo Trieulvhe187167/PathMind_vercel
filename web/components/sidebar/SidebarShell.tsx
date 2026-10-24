@@ -197,6 +197,7 @@ export function SidebarShell({
           >
             <Image
               src="/logo.png"
+              unoptimized
               alt="PathMind"
               width={22}
               height={22}
@@ -242,6 +243,7 @@ export function SidebarShell({
         <Link href="/" className="group flex items-center gap-1.5">
           <Image
             src="/logo.png"
+            unoptimized
             alt="PathMind"
             width={22}
             height={22}
@@ -249,6 +251,7 @@ export function SidebarShell({
           />
           <Image
             src="/banner_black.png"
+            unoptimized
             alt="PathMind"
             width={2172}
             height={724}

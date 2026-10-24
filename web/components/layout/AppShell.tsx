@@ -113,6 +113,7 @@ export default function AppShell({ sidebar, children }: AppShellProps) {
             <Link href="/" className="flex items-center gap-1.5">
               <Image
                 src="/logo.png"
+                unoptimized
                 alt="PathMind"
                 width={20}
                 height={20}
@@ -120,6 +121,7 @@ export default function AppShell({ sidebar, children }: AppShellProps) {
               />
               <Image
                 src="/banner_black.png"
+                unoptimized
                 alt="PathMind"
                 width={2172}
                 height={724}
