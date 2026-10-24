@@ -1,0 +1,5 @@
+# Private runtime data excluded from ChatGPT access.
+/data/
+/logs/
+/multi-user/
+*.log

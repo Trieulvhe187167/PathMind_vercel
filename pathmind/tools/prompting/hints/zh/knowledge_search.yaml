@@ -1,0 +1,6 @@
+short_description: "统一检索：先在知识图谱中定位相关主题，再在关联的 GraphRAG 知识库中按该范围检索。"
+when_to_use: "针对机构已发布内容（课程资料、制度、领域知识）的实质性问题。优先于分别调用 knowledge_graph 和 rag。闲聊无需调用。"
+input_format: "query = 自然语言问题；domain_id（可选）= 限定某个知识图谱领域。"
+guideline: "使用合并后的结果：知识图谱部分为权威内容，GraphRAG 部分补充细节与关联。引用所用的节点路径和来源。若某一部分返回提示（不可用/无匹配），依赖另一部分。"
+note: "知识图谱或 GraphRAG 缺失时返回提示而不是报错；两者都为空时正常回答。"
+phase: "exploration"

@@ -1,0 +1,6 @@
+short_description: "Browse the curated knowledge graph maintained by R&D: domains, schema, outline, nodes and their typed relations."
+when_to_use: "When the learner asks about a subject that may be covered by a curated domain, or you need the authoritative outline, a node's source excerpt, or how concepts relate (prerequisites, types, parts). Skip for chit-chat and unrelated questions."
+input_format: "action = domains | schema | outline | node | neighbors | search; outline needs domain_id; node and neighbors need node_id (neighbors also takes optional relation); search needs query."
+guideline: "Nodes are typed entities (Category, Type, Concept, Lesson...) with properties and provenance. Relations come as (a:Label) -[REL {props}]-> (b:Label) triples. Start with search or domains (schema lists the labels and relation types), then outline, then node for the one you need and neighbors to follow relations such as PREREQUISITE_OF or TYPE_OF. Prefer the node's source excerpt over your own memory when they differ, and say which node you used."
+note: "Returns '(no domains yet)' or '(no matches)' when nothing is published; answer normally then."
+phase: "exploration"

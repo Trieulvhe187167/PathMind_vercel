@@ -1,0 +1,79 @@
+{
+  "_readme": [
+    "Copy this file to data/seed/<any-name>.json (data/ is not in git) and start the app (start.bat).",
+    "It is applied once on start-up; edit it and restart to apply new items. Existing data is never overwritten.",
+    "Accounts without a password get a generated one, written to data/seed/seed-accounts.txt.",
+    "The first account becomes admin when the install has no accounts yet.",
+    "Put your own LLM keys in llm_providers in YOUR copy only; never commit keys.",
+    "Format reference: pathmind/services/seed.py. Knowledge is written like the Samples page (headings + @id/@label/@rel lines)."
+  ],
+  "accounts": [
+    {
+      "username": "admin",
+      "email": "admin@pathmind.local",
+      "full_name": "PathMind Admin",
+      "role": "admin"
+    },
+    {
+      "username": "rnd",
+      "email": "rnd@pathmind.local",
+      "full_name": "R&D Team",
+      "role": "rnd"
+    },
+    {
+      "username": "teacher",
+      "email": "teacher@pathmind.local",
+      "full_name": "Demo Educator",
+      "role": "educator",
+      "plan": "plus",
+      "plan_days": 365
+    },
+    {
+      "username": "student",
+      "email": "student@pathmind.local",
+      "full_name": "Demo Learner",
+      "role": "user"
+    }
+  ],
+  "schema": {
+    "labels": [
+      {
+        "name": "Formula",
+        "color": "#00a6a6",
+        "description": "A formula or identity."
+      }
+    ],
+    "relations": []
+  },
+  "knowledge": [
+    {
+      "domain": "Đại số 8",
+      "markdown": "# Đại số 8\n\n@id dai-so-8\n@name en = Algebra 8\n@label Category\n@description Chương trình Đại số lớp 8.\n@source Sách giáo khoa Toán 8, NXB Giáo dục\n@confidence 0.9\n\n## Phương trình\n\n@id phuong-trinh\n@name en = Equations\n@label Type\n\n## Hằng đẳng thức\n\n@id hang-dang-thuc\n@name en = Algebraic identities\n@label Type\n\n## Phương trình bậc nhất một ẩn\n\n@id pt-bac-nhat\n@name en = Linear equation in one variable\n@label Concept\n@description Phương trình dạng ax + b = 0 với a khác 0.\n@prop lop = 8\n@prop do_kho = 1\n@rel TYPE_OF -> #phuong-trinh\n@rel PREREQUISITE_OF -> #pt-tich\n\nPhương trình bậc nhất một ẩn có dạng ax + b = 0 (a ≠ 0), nghiệm duy nhất x = -b/a.\n\n## Bình phương của một tổng\n\n@id binh-phuong-tong\n@name en = Square of a sum\n@label Formula\n@description (a + b)² = a² + 2ab + b².\n@rel TYPE_OF -> #hang-dang-thuc\n@rel PREREQUISITE_OF -> #pt-tich\n\n## Phương trình tích\n\n@id pt-tich\n@name en = Product equation\n@label Concept\n@prop lop = 8\n@prop do_kho = 2\n@rel TYPE_OF -> #phuong-trinh\n\nA·B = 0 khi và chỉ khi A = 0 hoặc B = 0. Thường phải phân tích thành nhân tử trước, nên cần nắm hằng đẳng thức.\n\n## Bài giảng: Giải phương trình ax + b = 0\n\n@id bai-giang-pt-bac-nhat\n@label Lesson\n@rel EXPLAINS -> #pt-bac-nhat {phut: 25}\n\n## Bài tập: Phương trình tích\n\n@id bai-tap-pt-tich\n@label Exercise\n@rel USES -> #pt-tich {so_cau: 8}\n@rel USES -> #binh-phuong-tong {so_cau: 3}\n"
+    },
+    {
+      "domain": "Mathematics (sample)",
+      "markdown": "# Mathematics\n\n@label Category\n\nEvery heading becomes a node of the knowledge graph, and the text under it becomes that node's content, which the tutor reads when it answers. A heading inside another one is PART_OF it. Lines that start with @ add graph data: @id gives the node a readable id that is unique in the domain, @name adds its name in another language, @description a short summary, @source and @confidence say where the facts come from, @label sets the node type, @prop adds a property and @rel adds a relation (to a heading title or to #id).\n\n## Algebra\n\n@label Type\n\nCategories and types are ordinary nodes; other nodes point to them with TYPE_OF.\n\n## Geometry\n\n@label Type\n\n# Concepts and lessons\n\n@label Topic\n\nThe concepts, lessons and exercises themselves. A node can belong to several types, like a fruit that is also a fresh food.\n\n## Linear equations\n\n@id linear-equations\n@name vi = Phương trình bậc nhất\n@description An equation where the unknown appears only to the first power.\n@source Grade 8 textbook, chapter 3\n@confidence 0.95\n@label Concept\n@prop difficulty = 1\n@rel TYPE_OF -> Algebra\n@rel PREREQUISITE_OF -> Coordinate geometry\n\nAn equation of the form ax + b = 0. Write the explanation the tutor should rely on: definitions, worked examples, common mistakes.\n\n## Coordinate geometry\n\n@label Concept\n@prop difficulty = 2\n@rel TYPE_OF -> Algebra\n@rel TYPE_OF -> Geometry\n\nPoints, lines and shapes described with numbers. This concept is a type of both Algebra and Geometry.\n\n## Solving ax + b = 0\n\n@label Lesson\n@rel EXPLAINS -> Linear equations {minutes: 20}\n\nA relation can carry properties in braces, like the quantity on an order line.\n\n## Lines through two points\n\n@label Exercise\n@rel USES -> Coordinate geometry {questions: 5}\n\nIn Word, use the styles Heading 1 to Heading 4. In plain text and PDF, number the headings instead (1., 1.1, 1.1.1); the number is dropped from the title. Relations point to other headings by their title, so keep titles unique within a domain. Update a domain by editing this document in Co-Writer and choosing \"Update main graph\": headings that keep their place keep their node, and every update can be reverted from the edit history.\n"
+    }
+  ],
+  "llm_providers": [],
+  "_llm_providers_example": [
+    {
+      "name": "OpenAI",
+      "binding": "openai",
+      "api_key": "sk-...",
+      "models": [
+        "gpt-4.1-mini"
+      ],
+      "default": true
+    },
+    {
+      "name": "My proxy",
+      "binding": "custom",
+      "base_url": "https://example.com/v1",
+      "api_key": "...",
+      "models": [
+        "provider/model-name"
+      ]
+    }
+  ]
+}

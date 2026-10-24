@@ -1,0 +1,6 @@
+short_description: "Unified retrieval: finds the matching topics in the curated knowledge graph, then queries the linked GraphRAG knowledge base scoped to them."
+when_to_use: "For substantive questions about a subject the organisation has published (course material, policies, domain knowledge). Prefer this over calling knowledge_graph and rag separately. Skip for chit-chat."
+input_format: "query = the question in natural language; domain_id (optional) = restrict to one knowledge-graph domain."
+guideline: "Use the merged result: the curated knowledge-graph part (nodes with their labels and properties, plus 'Graph facts' triples) is authoritative, the GraphRAG part adds detail and relations. Cite the node paths and sources you used. If one half reports a note (unavailable / no match), rely on the other."
+note: "Returns notes instead of failing when the knowledge graph or the GraphRAG base is missing; answer normally if both are empty."
+phase: "exploration"

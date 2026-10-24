@@ -1,0 +1,6 @@
+short_description: "浏览由管理员维护的知识图谱：领域、模式、大纲、节点及其带类型的关系。"
+when_to_use: "当学习者询问的内容可能被某个已整理的领域覆盖，或需要权威大纲、节点原文摘录、概念之间的关系（先修、类型、组成）时使用。闲聊和无关问题无需调用。"
+input_format: "action = domains | schema | outline | node | neighbors | search；outline 需要 domain_id；node 和 neighbors 需要 node_id（neighbors 可选 relation）；search 需要 query。"
+guideline: "节点是带类型的实体（分类、类型、概念、课程等），含属性与来源。关系以 (a:Label) -[REL {props}]-> (b:Label) 三元组给出。先 search 或 domains（schema 列出标签和关系类型），再 outline，最后 node 读取所需节点，用 neighbors 沿 PREREQUISITE_OF、TYPE_OF 等关系查看。与你的记忆冲突时以节点原文为准，并说明使用了哪个节点。"
+note: "没有发布内容时返回 '(no domains yet)' 或 '(no matches)'，此时正常回答即可。"
+phase: "exploration"
