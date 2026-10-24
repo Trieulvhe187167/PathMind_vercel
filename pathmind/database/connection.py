@@ -17,6 +17,12 @@ Base = declarative_base()
 
 _DATABASE_URL = os.environ.get("DATABASE_URL")
 
+if _DATABASE_URL:
+    # Native Vercel Marketplace URLs omit the driver. The requirements install
+    # psycopg 3 rather than SQLAlchemy's historical psycopg2 default.
+    _DATABASE_URL = _DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+    _DATABASE_URL = _DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
 if not _DATABASE_URL:
     db_path = get_path_service().user_data_dir / "pathmind.db"
     db_path.parent.mkdir(parents=True, exist_ok=True)

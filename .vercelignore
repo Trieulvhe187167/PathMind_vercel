@@ -1,0 +1,17 @@
+data
+logs
+output
+outputs
+.env
+.env.*
+local.env.bat
+.report*
+.research_report
+.pathmind-defense-build
+**/node_modules
+**/.next*
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+backend
+tests_pm

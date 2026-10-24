@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "web": {
+      "root": "web",
+      "framework": "nextjs",
+      "buildCommand": "npm run build",
+      "bindings": [{ "type": "service", "service": "gateway", "format": "url", "env": "PATHMIND_API_BASE_URL" }]
+    },
+    "gateway": {
+      "root": "cloud-gateway",
+      "framework": "fastapi",
+      "entrypoint": "app.py"
+    }
+  },
+  "rewrites": [
+    { "source": "/auth/callback", "destination": { "service": "gateway" } },
+    { "source": "/api/(.*)", "destination": { "service": "gateway" } },
+    { "source": "/ws", "destination": { "service": "gateway" } },
+    { "source": "/ws/(.*)", "destination": { "service": "gateway" } },
+    { "source": "/files/(.*)", "destination": { "service": "gateway" } },
+    { "source": "/health/(.*)", "destination": { "service": "gateway" } },
+    { "source": "/(.*)", "destination": { "service": "web" } }
+  ]
+}
