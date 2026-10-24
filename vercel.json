@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["sin1"],
   "services": {
     "web": {
       "root": "web",
@@ -10,7 +11,8 @@
     "gateway": {
       "root": "cloud-gateway",
       "framework": "fastapi",
-      "entrypoint": "app.py"
+      "entrypoint": "app.py",
+      "functions": { "app.py": { "maxDuration": 300 } }
     }
   },
   "rewrites": [

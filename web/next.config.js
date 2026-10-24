@@ -113,13 +113,18 @@ const nextConfig = {
 
   // Standalone output: self-contained server.js + minimal node_modules
   // This eliminates the need to copy the full node_modules into Docker production images
-  output: "standalone",
+  ...(process.env.VERCEL === "1" ? {} : { output: "standalone" }),
 
   // Keep the standalone bundle rooted at this frontend directory. Without an
   // explicit root, Next.js can mirror the absolute checkout path inside
   // `.next-pathmind/standalone`, while the PathMind launcher expects
   // `.next-pathmind/standalone/server.js` directly.
-  outputFileTracingRoot: __dirname,
+  // Vercel Services packages assets relative to the repository root. Using
+  // web/ as the tracing root produces .next/... references without the web/
+  // prefix, and deployment then looks for a nonexistent root .next directory.
+  outputFileTracingRoot: process.env.VERCEL === "1"
+    ? path.resolve(__dirname, "..")
+    : __dirname,
 
   // web/proxy.ts clones request bodies before rewriting them. Keep enough room
   // for individual large-body endpoints that still use Proxy. Knowledge-base
